@@ -25,7 +25,6 @@ async def create_todo(todo):
     result = await collection.insert_one(document)
     return document
 
-
 async def update_todo(title, desc, completed):
     await collection.update_one({"title": title}, {"$set": {"description": desc, "completed": completed}})
     document = await collection.find_one({"title": title})
@@ -34,3 +33,8 @@ async def update_todo(title, desc, completed):
 async def remove_todo(title):
     await collection.delete_one({"title": title})
     return True
+
+async def complete_todo(title):
+    await collection.update_one({"title": title}, {"$set": {"completed": True}})
+    document = await collection.find_one({"title": title})
+    return document

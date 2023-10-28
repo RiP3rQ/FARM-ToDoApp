@@ -8,6 +8,7 @@ from database import (
     create_todo,
     update_todo,
     remove_todo,
+    complete_todo,
 )
 
 # create a new FastAPI instance
@@ -64,4 +65,11 @@ async def delete_todo(title):
     response = await remove_todo(title)
     if response:
         return "Successfully deleted todo"
+    raise HTTPException(404, f"There is no todo with the title {title}")
+
+@app.put("/api/todo/{title}/complete", response_model=Todo)
+async def complete_todo_by_title(title):
+    response = await complete_todo(title)
+    if response:
+        return response
     raise HTTPException(404, f"There is no todo with the title {title}")
